@@ -1,9 +1,183 @@
+---
+---
+
 <!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CineScope - Catálogo de Películas</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #0f0f0f;
+        color: #f0f0f0;
+        min-height: 100vh;
+      }
+
+      body.claro {
+        background-color: #f0f0f0;
+        color: #111;
+      }
+
+      .header {
+        background-color: #1a1a2e;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .header h1 {
+        color: #e94560;
+        font-size: 1.5rem;
+      }
+
+      .header button {
+        background: none;
+        border: 1px solid #e94560;
+        color: #f0f0f0;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        cursor: pointer;
+      }
+
+      .header button:hover {
+        background-color: #e94560;
+      }
+
+      .buscador {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .buscador input {
+        width: 100%;
+        max-width: 500px;
+        padding: 0.75rem 1.25rem;
+        border-radius: 25px;
+        border: 2px solid #e94560;
+        background: #1a1a2e;
+        color: #f0f0f0;
+        font-size: 1rem;
+        outline: none;
+      }
+
+      .buscador input:focus {
+        box-shadow: 0 0 10px #e94560;
+      }
+
+      .filtros {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .filtro {
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        border: 1px solid #444;
+        background: transparent;
+        color: #f0f0f0;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .filtro:hover,
+      .filtro.activo {
+        background-color: #e94560;
+        border-color: #e94560;
+      }
+
+      .grilla {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem 2rem;
+      }
+
+      .card {
+        background-color: #1a1a2e;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s;
+        cursor: pointer;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(233, 69, 96, 0.3);
+      }
+
+      .card img {
+        width: 100%;
+        aspect-ratio: 2/3;
+        object-fit: cover;
+      }
+
+      .card .info {
+        padding: 0.75rem;
+      }
+
+      .card .titulo {
+        font-size: 0.9rem;
+        font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .card .anio,
+      .card .rating {
+        font-size: 0.8rem;
+        color: #aaa;
+        margin-top: 0.2rem;
+      }
+
+      .mensaje {
+        text-align: center;
+        padding: 3rem;
+        color: #aaa;
+        grid-column: 1 / -1;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 2rem;
+        color: #aaa;
+        font-size: 0.85rem;
+      }
+
+      .footer a {
+        color: #e94560;
+      }
+
+      @media (max-width: 480px) {
+        .grilla {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .header h1 {
+          font-size: 1.1rem;
+        }
+      }
+    </style>
   </head>
 
   <body>
@@ -19,11 +193,11 @@
       <input type="text" id="inputBusqueda" placeholder="Buscar película..." />
       <div class="filtros">
         <button class="filtro activo" data-genero="all">Todas</button>
-        <button class="filtro" data-genero="28">Acción</button>
-        <button class="filtro" data-genero="35">Comedia</button>
-        <button class="filtro" data-genero="27">Terror</button>
-        <button class="filtro" data-genero="18">Drama</button>
-        <button class="filtro" data-genero="878">Ciencia ficción</button>
+        <button class="filtro" data-genero="accion">Acción</button>
+        <button class="filtro" data-genero="comedia">Comedia</button>
+        <button class="filtro" data-genero="terror">Terror</button>
+        <button class="filtro" data-genero="drama">Drama</button>
+        <button class="filtro" data-genero="ciencia-ficcion">Ciencia ficción</button>
       </div>
     </section>
 
@@ -37,186 +211,85 @@
       <p>Datos provistos por <a href="https://www.themoviedb.org" target="_blank">TMDB</a></p>
     </footer>
 
+    <script is:inline>
+      const peliculas = [
+        { titulo: "Inception", anio: 2010, rating: 8.8, genero: "ciencia-ficcion", imagen: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg" },
+        { titulo: "The Dark Knight", anio: 2008, rating: 9.0, genero: "accion", imagen: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" },
+        { titulo: "Interstellar", anio: 2014, rating: 8.6, genero: "ciencia-ficcion", imagen: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg" },
+        { titulo: "The Hangover", anio: 2009, rating: 7.7, genero: "comedia", imagen: "https://image.tmdb.org/t/p/w500/uluhlXubGu1VxU63X9VHCLWDAYP.jpg" },
+        { titulo: "Superbad", anio: 2007, rating: 7.6, genero: "comedia", imagen: "https://image.tmdb.org/t/p/w500/ek8e8txUyUwd2BNqj6lFEeGNxIU.jpg" },
+        { titulo: "Get Out", anio: 2017, rating: 7.7, genero: "terror", imagen: "https://image.tmdb.org/t/p/w500/tFXcEccSQMf3lfhfXKSU9iRBpa3.jpg" },
+        { titulo: "Hereditary", anio: 2018, rating: 7.3, genero: "terror", imagen: "https://image.tmdb.org/t/p/w500/p8MZPuDDVkM57NM7OlvLnkWCmG9.jpg" },
+        { titulo: "The Godfather", anio: 1972, rating: 9.2, genero: "drama", imagen: "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsLLeHjnkQqQo.jpg" },
+        { titulo: "Forrest Gump", anio: 1994, rating: 8.8, genero: "drama", imagen: "https://image.tmdb.org/t/p/w500/saHP97rTPS5eLmrLQEcANmKrsFl.jpg" },
+        { titulo: "Mad Max: Fury Road", anio: 2015, rating: 8.1, genero: "accion", imagen: "https://image.tmdb.org/t/p/w500/8tZYtuWezp8JbcsvHYO0O46tFbo.jpg" },
+        { titulo: "John Wick", anio: 2014, rating: 7.4, genero: "accion", imagen: "https://image.tmdb.org/t/p/w500/fZPSd91qGToPQ1v8HuEMsS0gOyK.jpg" },
+        { titulo: "The Truman Show", anio: 1998, rating: 8.1, genero: "drama", imagen: "https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg" },
+        { titulo: "A Quiet Place", anio: 2018, rating: 7.5, genero: "terror", imagen: "https://image.tmdb.org/t/p/w500/nAU74GmpUk7t5iklEp3bufwDq4n.jpg" },
+        { titulo: "The Martian", anio: 2015, rating: 8.0, genero: "ciencia-ficcion", imagen: "https://image.tmdb.org/t/p/w500/5BHuvQ6p9kfc091Z8RiFNhCwL4b.jpg" },
+        { titulo: "Step Brothers", anio: 2008, rating: 6.9, genero: "comedia", imagen: "https://image.tmdb.org/t/p/w500/lTHQWgO8OsWAjJXfAb3TKStHgMg.jpg" },
+      ];
+
+      const grilla = document.getElementById('grilla');
+      const inputBusqueda = document.getElementById('inputBusqueda');
+      const botonesFiltro = document.querySelectorAll('.filtro');
+      const btnTema = document.getElementById('btnTema');
+
+      let generoActual = 'all';
+      let temporizador = null;
+
+      function mostrarPeliculas(lista) {
+        grilla.innerHTML = '';
+        if (lista.length === 0) {
+          grilla.innerHTML = '<p class="mensaje">No se encontraron películas 🎬</p>';
+          return;
+        }
+        lista.forEach(function(pelicula) {
+          const card = document.createElement('article');
+          card.classList.add('card');
+          card.innerHTML =
+            '<img src="' + pelicula.imagen + '" alt="' + pelicula.titulo + '" loading="lazy" />' +
+            '<div class="info">' +
+              '<p class="titulo">' + pelicula.titulo + '</p>' +
+              '<p class="anio">📅 ' + pelicula.anio + '</p>' +
+              '<p class="rating">⭐ ' + pelicula.rating + '</p>' +
+            '</div>';
+          grilla.appendChild(card);
+        });
+      }
+
+      function filtrar() {
+        const textoBusqueda = inputBusqueda.value.toLowerCase();
+        const resultado = peliculas.filter(function(pelicula) {
+          const coincideGenero = generoActual === 'all' || pelicula.genero === generoActual;
+          const coincideBusqueda = pelicula.titulo.toLowerCase().includes(textoBusqueda);
+          return coincideGenero && coincideBusqueda;
+        });
+        mostrarPeliculas(resultado);
+      }
+
+      botonesFiltro.forEach(function(boton) {
+        boton.addEventListener('click', function() {
+          botonesFiltro.forEach(function(b) { b.classList.remove('activo'); });
+          boton.classList.add('activo');
+          generoActual = boton.dataset.genero;
+          filtrar();
+        });
+      });
+
+      inputBusqueda.addEventListener('input', function() {
+        clearTimeout(temporizador);
+        temporizador = setTimeout(filtrar, 300);
+      });
+
+      btnTema.addEventListener('click', function() {
+        document.body.classList.toggle('claro');
+        const estaClaro = document.body.classList.contains('claro');
+        btnTema.textContent = estaClaro ? '🌙 Modo oscuro' : '☀️ Modo claro';
+      });
+
+      mostrarPeliculas(peliculas);
+    </script>
+
   </body>
-  <style>
-  /* Reset básico */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #0f0f0f;
-    color: #f0f0f0;
-    min-height: 100vh;
-  }
-
-  /* Modo claro (se activa con JS) */
-  body.claro {
-    background-color: #f0f0f0;
-    color: #111;
-  }
-
-  /* HEADER */
-  .header {
-    background-color: #1a1a2e;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-
-  .header h1 {
-    color: #e94560;
-    font-size: 1.5rem;
-  }
-
-  .header button {
-    background: none;
-    border: 1px solid #e94560;
-    color: #f0f0f0;
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    cursor: pointer;
-  }
-
-  .header button:hover {
-    background-color: #e94560;
-  }
-
-  /* BUSCADOR Y FILTROS */
-  .buscador {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .buscador input {
-    width: 100%;
-    max-width: 500px;
-    padding: 0.75rem 1.25rem;
-    border-radius: 25px;
-    border: 2px solid #e94560;
-    background: #1a1a2e;
-    color: #f0f0f0;
-    font-size: 1rem;
-    outline: none;
-  }
-
-  .buscador input:focus {
-    box-shadow: 0 0 10px #e94560;
-  }
-
-  .filtros {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .filtro {
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    border: 1px solid #444;
-    background: transparent;
-    color: #f0f0f0;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .filtro:hover,
-  .filtro.activo {
-    background-color: #e94560;
-    border-color: #e94560;
-  }
-
-  /* GRILLA */
-  .grilla {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem 2rem;
-  }
-
-  /* CARD */
-  .card {
-    background-color: #1a1a2e;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.3s;
-    cursor: pointer;
-  }
-
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(233, 69, 96, 0.3);
-  }
-
-  .card img {
-    width: 100%;
-    aspect-ratio: 2/3;
-    object-fit: cover;
-  }
-
-  .card .info {
-    padding: 0.75rem;
-  }
-
-  .card .titulo {
-    font-size: 0.9rem;
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .card .anio,
-  .card .rating {
-    font-size: 0.8rem;
-    color: #aaa;
-    margin-top: 0.2rem;
-  }
-
-  /* MENSAJES */
-  .mensaje {
-    text-align: center;
-    padding: 3rem;
-    color: #aaa;
-    grid-column: 1 / -1;
-  }
-
-  /* FOOTER */
-  .footer {
-    text-align: center;
-    padding: 2rem;
-    color: #aaa;
-    font-size: 0.85rem;
-  }
-
-  .footer a {
-    color: #e94560;
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 480px) {
-    .grilla {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .header h1 {
-      font-size: 1.1rem;
-    }
-  }
-</style>
 </html>
