@@ -38,4 +38,185 @@
     </footer>
 
   </body>
+  <style>
+  /* Reset básico */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #0f0f0f;
+    color: #f0f0f0;
+    min-height: 100vh;
+  }
+
+  /* Modo claro (se activa con JS) */
+  body.claro {
+    background-color: #f0f0f0;
+    color: #111;
+  }
+
+  /* HEADER */
+  .header {
+    background-color: #1a1a2e;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .header h1 {
+    color: #e94560;
+    font-size: 1.5rem;
+  }
+
+  .header button {
+    background: none;
+    border: 1px solid #e94560;
+    color: #f0f0f0;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  .header button:hover {
+    background-color: #e94560;
+  }
+
+  /* BUSCADOR Y FILTROS */
+  .buscador {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .buscador input {
+    width: 100%;
+    max-width: 500px;
+    padding: 0.75rem 1.25rem;
+    border-radius: 25px;
+    border: 2px solid #e94560;
+    background: #1a1a2e;
+    color: #f0f0f0;
+    font-size: 1rem;
+    outline: none;
+  }
+
+  .buscador input:focus {
+    box-shadow: 0 0 10px #e94560;
+  }
+
+  .filtros {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .filtro {
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    border: 1px solid #444;
+    background: transparent;
+    color: #f0f0f0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filtro:hover,
+  .filtro.activo {
+    background-color: #e94560;
+    border-color: #e94560;
+  }
+
+  /* GRILLA */
+  .grilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem 2rem;
+  }
+
+  /* CARD */
+  .card {
+    background-color: #1a1a2e;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(233, 69, 96, 0.3);
+  }
+
+  .card img {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+  }
+
+  .card .info {
+    padding: 0.75rem;
+  }
+
+  .card .titulo {
+    font-size: 0.9rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card .anio,
+  .card .rating {
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-top: 0.2rem;
+  }
+
+  /* MENSAJES */
+  .mensaje {
+    text-align: center;
+    padding: 3rem;
+    color: #aaa;
+    grid-column: 1 / -1;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 2rem;
+    color: #aaa;
+    font-size: 0.85rem;
+  }
+
+  .footer a {
+    color: #e94560;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 480px) {
+    .grilla {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .header h1 {
+      font-size: 1.1rem;
+    }
+  }
+</style>
 </html>
