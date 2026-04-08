@@ -1,17 +1,41 @@
----
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CineScope - Catálogo de Películas</title>
+  </head>
 
----
+  <body>
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+    <!-- SECCIÓN 1: HEADER -->
+    <header class="header">
+      <h1>🎬 CineScope</h1>
+      <button id="btnTema">☀️ Modo claro</button>
+    </header>
+
+    <!-- SECCIÓN 2: BÚSQUEDA Y FILTROS -->
+    <section class="buscador">
+      <input type="text" id="inputBusqueda" placeholder="Buscar película..." />
+      <div class="filtros">
+        <button class="filtro activo" data-genero="all">Todas</button>
+        <button class="filtro" data-genero="28">Acción</button>
+        <button class="filtro" data-genero="35">Comedia</button>
+        <button class="filtro" data-genero="27">Terror</button>
+        <button class="filtro" data-genero="18">Drama</button>
+        <button class="filtro" data-genero="878">Ciencia ficción</button>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: GRILLA DE PELÍCULAS -->
+    <main class="grilla" id="grilla">
+      <p class="mensaje">Cargando películas...</p>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>Datos provistos por <a href="https://www.themoviedb.org" target="_blank">TMDB</a></p>
+    </footer>
+
+  </body>
 </html>
