@@ -168,6 +168,37 @@
       .footer a {
         color: #e94560;
       }
+	  /* Animación de entrada del header */
+@keyframes bajarHeader {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header {
+  animation: bajarHeader 0.5s ease;
+}
+
+/* Animación de entrada de las cards */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: aparecer 0.4s ease;
+}
 
       @media (max-width: 480px) {
         .grilla {
